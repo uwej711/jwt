@@ -79,8 +79,8 @@ abstract class OpenSSL implements Signer
                 'Error verifying signature: %s, payload: %s, expected: %s, key: %s, alg: %s',
                 $error,
                 $payload,
-                $expected,
-                $key,
+                bin2hex($expected),
+                $pem,
                 $this->algorithm()
             ));
         }
