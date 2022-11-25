@@ -70,14 +70,18 @@ abstract class OpenSSL implements Signer
         $key    = $this->getPublicKey($pem);
         $result = openssl_verify($payload, $expected, $key, $this->algorithm());
 
-        if ($result === -1) {
-            $error = openssl_error_string();
+        if ($result !== 1) {
+            $error = 'no ssl error';
+
+            if ($result === -1)  $error = openssl_error_string();
+
             throw new \Exception(sprintf(
-                'Error verifying signature: %s, payload: %s, expected: %s, key: %s',
+                'Error verifying signature: %s, payload: %s, expected: %s, key: %s, alg: %s',
                 $error,
                 $payload,
                 $expected,
-                $key
+                $key,
+                $this->algorithm()
             ));
         }
 
